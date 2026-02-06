@@ -1,4 +1,4 @@
-import { Settings, BookOpen } from 'lucide-react';
+import { Layers, Zap } from 'lucide-react';
 
 interface SidebarProps {
   language: string;
@@ -9,64 +9,6 @@ interface SidebarProps {
   setUseAI: (use: boolean) => void;
   onLoadExample: (code: string) => void;
 }
-
-const EXAMPLES = {
-  'python-bad': `def myFunction():
-    password = "hardcoded123"
-    x = 10
-    unused_var = 20
-    
-    try:
-        result = x / 0
-    except:
-        pass
-    
-    return result`,
-  
-  'python-good': `def calculate_sum(numbers: list[int]) -> int:
-    """
-    Calculate the sum of a list of numbers.
-    
-    Args:
-        numbers: List of integers to sum
-        
-    Returns:
-        Sum of all numbers
-    """
-    if not numbers:
-        raise ValueError("Cannot sum empty list")
-    
-    return sum(numbers)`,
-  
-  'java-bad': `public class testClass {
-    static String API_KEY = "12345";
-    
-    public void MyMethod() {
-        String name = "John";
-        if (name == "John") {
-            System.out.println("Hello");
-        }
-        
-        try {
-            int result = 10 / 0;
-        } catch (Exception e) {
-            
-        }
-    }
-}`,
-  
-  'cpp-bad': `#include <stdio.h>
-using namespace std;
-
-int main() {
-    int* data = new int[10];
-    int* ptr = NULL;
-    
-    int value = *ptr;
-    
-    return 0;
-}`
-};
 
 export default function Sidebar({
   language,
@@ -79,16 +21,61 @@ export default function Sidebar({
 }: SidebarProps) {
   return (
     <div className="space-y-6">
-      {/* Supported Languages */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-          📊 Supported Languages
-        </h3>
-        <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-          <div>✅ Python</div>
-          <div>✅ Java</div>
-          <div>✅ C++</div>
+      {/* AI Power */}
+      <div className="bg-gray-900 rounded-2xl shadow-xl p-6 border-2 border-purple-500 card-hover">
+        <div className="flex items-center gap-2 mb-4">
+          <Zap className="text-yellow-400" size={24} />
+          <h3 className="text-lg font-bold text-white">
+            AI Analysis
+          </h3>
         </div>
+        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl p-4 text-white shadow-lg">
+          <p className="text-sm font-semibold mb-2">🤖 Powered by Gemini AI</p>
+          <p className="text-xs opacity-90">Advanced code analysis with machine learning</p>
+        </div>
+      </div>
+
+      {/* Supported Languages */}
+      <div className="bg-gray-900 rounded-2xl shadow-xl p-6 border-2 border-blue-500 card-hover">
+        <div className="flex items-center gap-2 mb-4">
+          <Layers className="text-blue-400" size={24} />
+          <h3 className="text-lg font-bold text-white">
+            Supported Languages
+          </h3>
+        </div>
+        <div className="space-y-3">
+          <div className="flex items-center gap-3 p-3 bg-yellow-900/30 rounded-lg border-2 border-yellow-500">
+            <span className="text-2xl">🐍</span>
+            <span className="font-semibold text-white">Python</span>
+          </div>
+          <div className="flex items-center gap-3 p-3 bg-red-900/30 rounded-lg border-2 border-red-500">
+            <span className="text-2xl">☕</span>
+            <span className="font-semibold text-white">Java</span>
+          </div>
+          <div className="flex items-center gap-3 p-3 bg-blue-900/30 rounded-lg border-2 border-blue-500">
+            <span className="text-2xl">⚡</span>
+            <span className="font-semibold text-white">C++</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="bg-gray-900 rounded-2xl shadow-xl p-6 border-2 border-green-500 card-hover">
+        <h3 className="text-sm font-bold text-white mb-3">✨ Features</h3>
+        <ul className="space-y-2 text-sm text-gray-200">
+          <li className="flex items-center gap-2">
+            <span className="text-green-400 text-lg">✓</span> <span className="text-white">Security Analysis</span>
+          </li>
+          <li className="flex items-center gap-2">
+            <span className="text-green-400 text-lg">✓</span> <span className="text-white">Performance Review</span>
+          </li>
+          <li className="flex items-center gap-2">
+            <span className="text-green-400 text-lg">✓</span> <span className="text-white">Best Practices</span>
+          </li>
+          <li className="flex items-center gap-2">
+            <span className="text-green-400 text-lg">✓</span> <span className="text-white">Code Quality Score</span>
+          </li>
+        </ul>
       </div>
     </div>
   );
