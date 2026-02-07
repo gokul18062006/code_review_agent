@@ -9,6 +9,11 @@ export interface CodeReviewRequest {
   use_ai?: boolean;
 }
 
+export interface IssueFix {
+  issue: string;
+  fix: string;
+}
+
 export interface CodeSummary {
   total_lines: number;
   code_lines: number;
@@ -22,11 +27,13 @@ export interface CodeReviewResponse {
   language: string;
   issues: string[];
   suggestions: string[];
+  issue_fixes?: IssueFix[];
   rating: string;
   assessment: string;
   static_analysis: {
     issues: string[];
     suggestions: string[];
+    issue_fixes?: IssueFix[];
   };
   ai_analysis?: {
     issues: string[];

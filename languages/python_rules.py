@@ -13,6 +13,7 @@ class PythonRuleChecker:
     def __init__(self):
         self.issues = []
         self.suggestions = []
+        self.issue_fixes = []  # Paired issue-fix suggestions
     
     def check_all(self, code: str) -> Dict[str, List[str]]:
         """
@@ -22,10 +23,11 @@ class PythonRuleChecker:
             code: Python source code
             
         Returns:
-            Dictionary with issues and suggestions
+            Dictionary with issues, suggestions, and issue_fixes
         """
         self.issues = []
         self.suggestions = []
+        self.issue_fixes = []
         
         self.check_unused_variables(code)
         self.check_function_length(code)
@@ -38,7 +40,8 @@ class PythonRuleChecker:
         
         return {
             'issues': self.issues,
-            'suggestions': self.suggestions
+            'suggestions': self.suggestions,
+            'issue_fixes': self.issue_fixes
         }
     
     def check_unused_variables(self, code: str):
@@ -58,8 +61,11 @@ class PythonRuleChecker:
             
             unused = assigned_vars - used_vars
             if unused and not any(var.startswith('_') for var in unused):
-                self.issues.append(f"Unused variables detected: {', '.join(list(unused)[:3])}")
-                self.suggestions.append("Remove unused variables or prefix with '_' if intentional")
+                issue = f"Unused variables detected: {', '.join(list(unused)[:3])}"
+                fix = "Remove unused variables or prefix with '_' if intentional"
+                self.issues.append(issue)
+                self.suggestions.append(fix)
+                self.issue_fixes.append({'issue': issue, 'fix': fix})
         except:
             pass
     
@@ -75,8 +81,11 @@ class PythonRuleChecker:
                 if in_function:
                     length = i - function_start
                     if length > 50:
-                        self.issues.append(f"Function '{function_name}' is too long ({length} lines)")
-                        self.suggestions.append("Break down long functions into smaller, reusable functions")
+                        issue = f"Function '{function_name}' is too long ({length} lines)"
+                        fix = "Break down into smaller functions (max 50 lines each)"
+                        self.issues.append(issue)
+                        self.suggestions.append(fix)
+                        self.issue_fixes.append({'issue': issue, 'fix': fix})
                 
                 match = re.match(r'\s*def\s+(\w+)', line)
                 function_name = match.group(1)
@@ -91,8 +100,11 @@ class PythonRuleChecker:
             for node in ast.walk(tree):
                 if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
                     if not ast.get_docstring(node):
-                        self.issues.append(f"Missing docstring for {node.name}")
-                        self.suggestions.append("Add docstrings to functions and classes for better documentation")
+                        issue = f"Missing docstring for {node.name}"
+                        fix = f'Add docstring: """Description of {node.name}."""'
+                        self.issues.append(issue)
+                        self.suggestions.append(fix)
+                        self.issue_fixes.append({'issue': issue, 'fix': fix})
         except:
             pass
     
@@ -107,31 +119,42 @@ class PythonRuleChecker:
         
         for pattern, message in secret_patterns:
             if re.search(pattern, code, re.IGNORECASE):
-                self.issues.append(f"🔒 Security: {message} detected")
-                self.suggestions.append("Use environment variables or secure vaults for sensitive data")
+                issue = f"🔒 Security: {message} detected"
+                fix = "Use os.getenv('SECRET_NAME') or python-dotenv to load from .env file"
+                self.issues.append(issue)
+                self.suggestions.append(fix)
+                self.issue_fixes.append({'issue': issue, 'fix': fix})
                 break
     
     def check_exception_handling(self, code: str):
         """Check exception handling practices"""
         if re.search(r'except\s*:', code):
-            self.issues.append("Bare 'except:' clause detected")
-            self.suggestions.append("Catch specific exceptions instead of using bare except")
+            issue = "Bare 'except:' clause detected"
+            fix = "Replace with: except ValueError: or except (TypeError, KeyError):"
+            self.issues.append(issue)
+            self.suggestions.append(fix)
+            self.issue_fixes.append({'issue': issue, 'fix': fix})
         
         if re.search(r'except\s+Exception\s*:', code):
-            self.suggestions.append("Consider catching more specific exceptions instead of broad Exception")
+            fix = "Consider catching more specific exceptions like ValueError, TypeError, etc."
+            self.suggestions.append(fix)
     
     def check_naming_conventions(self, code: str):
         """Check naming conventions"""
         # Check for camelCase in function names (should be snake_case)
         camel_case_functions = re.findall(r'def\s+([a-z]+[A-Z]\w+)\s*\(', code)
         if camel_case_functions:
-            self.issues.append(f"Non-Pythonic naming: {camel_case_functions[0]}() uses camelCase")
-            self.suggestions.append("Use snake_case for function names (PEP 8)")
+            issue = f"Non-Pythonic naming: {camel_case_functions[0]}() uses camelCase"
+            fix = f"Rename to: {re.sub(r'(?<!^)(?=[A-Z])', '_', camel_case_functions[0]).lower()}()"
+            self.issues.append(issue)
+            self.suggestions.append(fix)
+            self.issue_fixes.append({'issue': issue, 'fix': fix})
         
         # Check for single-letter variable names (except in comprehensions/loops)
         single_letter_vars = re.findall(r'\b([a-z])\s*=\s*', code)
         if len(single_letter_vars) > 3:
-            self.suggestions.append("Avoid excessive single-letter variable names; use descriptive names")
+            fix = "Use descriptive names: data instead of d, count instead of c"
+            self.suggestions.append(fix)
     
     def check_imports(self, code: str):
         """Check import statements"""
@@ -140,8 +163,11 @@ class PythonRuleChecker:
         # Check for wildcard imports
         wildcard_imports = [line for line in lines if re.match(r'from\s+\w+\s+import\s+\*', line)]
         if wildcard_imports:
-            self.issues.append("Wildcard import detected (from x import *)")
-            self.suggestions.append("Use explicit imports instead of wildcard imports")
+            issue = "Wildcard import detected (from x import *)"
+            fix = "Use: from module import SpecificClass, specific_function"
+            self.issues.append(issue)
+            self.suggestions.append(fix)
+            self.issue_fixes.append({'issue': issue, 'fix': fix})
         
         # Check import order
         import_lines = [i for i, line in enumerate(lines) if line.strip().startswith(('import ', 'from '))]
@@ -158,8 +184,11 @@ class PythonRuleChecker:
                 max_indent = max(max_indent, indent // 4)
         
         if max_indent > 4:
-            self.issues.append(f"Deep nesting detected (level {max_indent})")
-            self.suggestions.append("Reduce nesting by extracting functions or using early returns")
+            issue = f"Deep nesting detected (level {max_indent})"
+            fix = "Use guard clauses: if not condition: return; then continue with main logic"
+            self.issues.append(issue)
+            self.suggestions.append(fix)
+            self.issue_fixes.append({'issue': issue, 'fix': fix})
 
 
 if __name__ == "__main__":

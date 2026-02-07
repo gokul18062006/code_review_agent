@@ -1,5 +1,5 @@
 import { CodeReviewResponse } from '../api';
-import { AlertCircle, CheckCircle, Lightbulb, TrendingUp, Award, Target, Bug, Sparkles } from 'lucide-react';
+import { AlertCircle, CheckCircle, Lightbulb, TrendingUp, Award, Target, Bug, Sparkles, ArrowRight } from 'lucide-react';
 
 interface ReviewResultsProps {
   result: CodeReviewResponse;
@@ -68,7 +68,35 @@ export default function ReviewResults({ result }: ReviewResultsProps) {
       <div className="bg-gray-900 rounded-lg p-6">
         <h3 className="text-xl font-bold text-white mb-5">Review Findings</h3>
         
-        {result.issues.length > 0 && (
+        {result.static_analysis?.issue_fixes && result.static_analysis.issue_fixes.length > 0 ? (
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Bug size={18} className="text-red-400" />
+              <span className="font-semibold text-white">Issues with Auto-Fix Suggestions ({result.static_analysis.issue_fixes.length})</span>
+            </div>
+            <div className="space-y-3">
+              {result.static_analysis.issue_fixes.map((item, index) => (
+                <div key={index} className="bg-gray-800 rounded-lg p-4 border-l-4 border-red-500">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <AlertCircle size={16} className="text-red-400" />
+                        <span className="text-red-300 font-medium">Issue:</span>
+                      </div>
+                      <p className="text-gray-200 mb-3">{item.issue}</p>
+                      
+                      <div className="flex items-center gap-2 mb-2">
+                        <ArrowRight size={16} className="text-green-400" />
+                        <span className="text-green-300 font-medium">How to Fix:</span>
+                      </div>
+                      <p className="text-green-200 bg-green-900/20 p-2 rounded font-mono text-sm">{item.fix}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : result.issues.length > 0 ? (
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-3">
               <Bug size={18} className="text-red-400" />
@@ -87,7 +115,7 @@ export default function ReviewResults({ result }: ReviewResultsProps) {
               ))}
             </div>
           </div>
-        )}
+        ) : null}
         
         {result.suggestions.length > 0 && (
           <div>
@@ -110,7 +138,7 @@ export default function ReviewResults({ result }: ReviewResultsProps) {
           </div>
         )}
         
-        {result.issues.length === 0 && result.suggestions.length === 0 && (
+        {!result.static_analysis?.issue_fixes?.length && result.issues.length === 0 && result.suggestions.length === 0 && (
           <p className="text-gray-400 text-center py-8">✨ No issues or suggestions found. Code looks good!</p>
         )}
       </div>
