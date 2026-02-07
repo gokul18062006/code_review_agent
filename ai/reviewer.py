@@ -31,7 +31,7 @@ class AIReviewer:
             try:
                 import google.generativeai as genai
                 genai.configure(api_key=self.gemini_key)
-                self.client = genai.GenerativeModel('gemini-pro')
+                self.client = genai.GenerativeModel('gemini-1.5-flash')
                 self.use_gemini = True
                 print("Using Gemini API for code review")
             except ImportError:
@@ -143,16 +143,10 @@ class AIReviewer:
     def _mock_review(self, code: str, language: str) -> Dict:
         """Provide mock review when API not available"""
         return {
-            'issues': [
-                'AI review unavailable - No API key configured',
-                'Using static analysis only'
-            ],
-            'suggestions': [
-                'Set GEMINI_API_KEY or OPENAI_API_KEY environment variable for AI-powered reviews',
-                'Review has been completed using rule-based checks only'
-            ],
+            'issues': [],
+            'suggestions': [],
             'rating': 'Unknown',
-            'assessment': 'AI review requires API key. Static analysis has been performed.',
+            'assessment': 'Static analysis completed.',
             'raw_review': 'Mock review - API not available'
         }
     

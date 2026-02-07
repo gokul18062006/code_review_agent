@@ -114,12 +114,18 @@ class CodeReviewer:
         all_suggestions = static_results['suggestions'].copy()
         
         if ai_results:
-            # Add AI findings, avoiding duplicates
+            # Add AI findings, avoiding duplicates and mock messages
             for issue in ai_results.get('issues', []):
+                # Skip mock review messages
+                if 'AI review unavailable' in issue or 'Using static analysis only' in issue:
+                    continue
                 if issue not in all_issues:
                     all_issues.append(f"[AI] {issue}")
             
             for suggestion in ai_results.get('suggestions', []):
+                # Skip mock review messages
+                if 'API key' in suggestion or 'rule-based checks only' in suggestion:
+                    continue
                 if suggestion not in all_suggestions:
                     all_suggestions.append(f"[AI] {suggestion}")
         
