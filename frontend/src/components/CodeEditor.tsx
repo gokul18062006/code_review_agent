@@ -31,7 +31,7 @@ export default function CodeEditor({ code, setCode, onReview, loading }: CodeEdi
         value={code}
         onChange={(e) => setCode(e.target.value)}
         placeholder="Paste your code here...\n\nExample:\ndef hello():\n    print('Hello, World!')\n\nhello()"
-        className="w-full h-[500px] p-5 bg-gray-950 text-gray-100 code-editor resize-none focus:outline-none border-0"
+        className="w-full h-[600px] p-6 bg-gray-950 text-gray-100 text-base code-editor resize-none focus:outline-none border-0"
         spellCheck={false}
       />
     </div>
