@@ -1,42 +1,9 @@
 import { CodeReviewResponse } from '../api';
-import { AlertCircle, CheckCircle, Lightbulb, TrendingUp, Award, Target, Bug, Sparkles, ArrowRight } from 'lucide-react';
+import { AlertCircle, Lightbulb, Bug, ArrowRight } from 'lucide-react';
 
 interface ReviewResultsProps {
   result: CodeReviewResponse;
 }
-
-const getRatingColor = (rating: string) => {
-  const colors: Record<string, string> = {
-    'Excellent': 'bg-green-600',
-    'Good': 'bg-blue-600',
-    'Average': 'bg-yellow-600',
-    'Needs Improvement': 'bg-orange-600',
-    'Poor': 'bg-red-600',
-  };
-  return colors[rating] || 'bg-gray-600';
-};
-
-const getRatingEmoji = (rating: string) => {
-  const emojis: Record<string, string> = {
-    'Excellent': '🌟',
-    'Good': '✅',
-    'Average': '⚠️',
-    'Needs Improvement': '⚠️',
-    'Poor': '❌',
-  };
-  return emojis[rating] || '❓';
-};
-
-const getRatingScore = (rating: string) => {
-  const scores: Record<string, number> = {
-    'Excellent': 95,
-    'Good': 80,
-    'Average': 65,
-    'Needs Improvement': 45,
-    'Poor': 25,
-  };
-  return scores[rating] || 0;
-};
 
 export default function ReviewResults({ result }: ReviewResultsProps) {
   return (
