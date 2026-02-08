@@ -2,14 +2,10 @@ import { useState } from 'react';
 import CodeEditor from './components/CodeEditor';
 import ReviewResults from './components/ReviewResults';
 import Header from './components/Header';
-import Sidebar from './components/Sidebar';
 import { api, CodeReviewResponse } from './api';
 
 function App() {
   const [code, setCode] = useState('');
-  const [language, setLanguage] = useState<string>('auto');
-  const [focus, setFocus] = useState<'comprehensive' | 'security' | 'performance' | 'style'>('comprehensive');
-  const [useAI, setUseAI] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [reviewResult, setReviewResult] = useState<CodeReviewResponse | null>(null);
@@ -27,9 +23,9 @@ function App() {
     try {
       const result = await api.reviewCode({
         code,
-        language: language === 'auto' ? undefined : language,
-        focus,
-        use_ai: useAI,
+        language: undefined,
+        focus: 'comprehensive',
+        use_ai: true,
       });
       setReviewResult(result);
     } catch (err) {
@@ -38,10 +34,6 @@ function App() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const loadExample = (exampleCode: string) => {
-    setCode(exampleCode);
   };
 
   return (
@@ -69,7 +61,7 @@ function App() {
             {/* Loading State */}
             {loading && (
               <div className="bg-gray-900 border border-gray-800 rounded-lg p-12 text-center fade-in">
-                <Loader2 className="w-12 h-12 animate-spin mx-auto text-blue-500 mb-4" />
+                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                 <p className="text-white font-medium">Analyzing your code...</p>
                 <p className="text-gray-400 text-sm mt-2">Please wait</p>
               </div>

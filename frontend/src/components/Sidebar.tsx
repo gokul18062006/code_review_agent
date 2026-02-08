@@ -1,22 +1,4 @@
-interface SidebarProps {
-  language: string;
-  setLanguage: (lang: string) => void;
-  focus: 'comprehensive' | 'security' | 'performance' | 'style';
-  setFocus: (focus: 'comprehensive' | 'security' | 'performance' | 'style') => void;
-  useAI: boolean;
-  setUseAI: (use: boolean) => void;
-  onLoadExample: (code: string) => void;
-}
-
-export default function Sidebar({
-  language,
-  setLanguage,
-  focus,
-  setFocus,
-  useAI,
-  setUseAI,
-  onLoadExample
-}: SidebarProps) {
+export default function Sidebar() {
   return (
     <div className="space-y-6">
       {/* AI Power */}
