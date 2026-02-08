@@ -1,122 +1,191 @@
-# 🔍 Code Review Agent
+# � AI Code Review Agent
 
-An advanced AI-powered code review system that combines static analysis with LLM-based review to provide comprehensive feedback on code quality, security, performance, and best practices.
+An intelligent, multi-language code review tool powered by Google Gemini AI that provides instant feedback, identifies issues, and suggests automatic fixes.
 
-## 🌟 Features
+![Python](https://img.shields.io/badge/Python-3.13-blue)
+![React](https://img.shields.io/badge/React-18.2-61dafb)
+![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-- **Multi-Language Support**: Python, Java, and C++ with extensible architecture
-- **Hybrid Analysis**: Combines rule-based static analysis with AI-powered insights
-- **Context Compression**: Intelligent code chunking for efficient LLM processing
-- **Security Scanning**: Detects hardcoded secrets, vulnerabilities, and security risks
-- **Performance Analysis**: Identifies optimization opportunities and complexity issues
-- **Best Practices**: Checks adherence to language-specific conventions
-- **REST API**: FastAPI-based backend for integration
-- **Web UI**: User-friendly Streamlit interface
+## ✨ Features
 
-## 🏗️ Architecture
+### 🎯 Core Features
+- **Multi-Language Support**: Python, Java, C++, and more
+- **AI-Powered Analysis**: Leverages Google Gemini 1.5 Flash for intelligent code review
+- **Static Analysis**: Rule-based checking without API dependency
+- **Auto-Fix Suggestions**: Each issue comes with a specific solution ⭐
+- **Real-time Analysis**: Instant feedback as you paste code
+- **Clean Dark UI**: Modern, minimalist interface for better readability
 
-```
-User Code Input
-      ↓
-Language Detection
-      ↓
-Code Compression & Chunking
-      ↓
-┌─────────────────┬──────────────────┐
-│ Static Analysis │  AI-LLM Review   │
-│ (Rule-Based)    │  (OpenAI/Local)  │
-└─────────────────┴──────────────────┘
-      ↓
-Result Aggregation
-      ↓
-Review Output (Issues + Suggestions + Rating)
-```
+### 🔥 Auto-Improvement Suggestions (Unique Feature!)
+For every issue detected, the tool suggests **exactly how to fix it**:
+
+| Issue | Auto-Fix Suggestion |
+|-------|---------------------|
+| Debug print found | Use logging module: `logger.info()` |
+| `eval()` detected | Use `ast.literal_eval()` for safety |
+| Bare except clause | Replace with: `except ValueError:` |
+| camelCase function | Rename to: `snake_case_name()` |
+| Hardcoded password | Use `os.getenv('PASSWORD')` |
+
+### 📊 Code Metrics
+- Total lines of code
+- Function count
+- Class count
+- Complexity analysis
+
+## �️ Technology Stack
+
+**Frontend:**
+- React 18.2 + TypeScript
+- Vite 5.4
+- Tailwind CSS
+- Lucide React Icons
+- Axios
+
+**Backend:**
+- Python 3.13
+- FastAPI
+- Google Gemini AI API
+- Uvicorn
 
 ## 📂 Project Structure
 
 ```
-code-review-agent/
-│
-├── app.py                      # FastAPI main application
-├── streamlit_app.py            # Streamlit web UI
-├── requirements.txt            # Python dependencies
-│
-├── ai/
-│   ├── prompt_builder.py       # Dynamic prompt generation
-│   └── reviewer.py             # AI-powered review logic
-│
-├── languages/
-│   ├── python_rules.py         # Python static analysis rules
-│   ├── java_rules.py           # Java static analysis rules
-│   └── cpp_rules.py            # C++ static analysis rules
-│
-├── utils/
-│   ├── detector.py             # Language detection
-│   └── compressor.py           # Code compression & chunking
-│
-└── README.md                   # This file
+code_review_agent/
+├── ai/                      # AI review logic
+│   ├── prompt_builder.py   # Prompt engineering
+│   └── reviewer.py         # Gemini AI integration
+├── backend/
+│   └── app/               # FastAPI backend (future)
+├── frontend/              # React frontend
+│   ├── src/
+│   │   ├── components/   # React components
+│   │   ├── api.ts        # API client
+│   │   └── App.tsx       # Main app
+│   └── package.json
+├── languages/             # Language-specific rules
+│   ├── python_rules.py
+│   ├── java_rules.py
+│   └── cpp_rules.py
+├── utils/                 # Utilities
+│   ├── detector.py       # Language detection
+│   └── compressor.py     # Code compression
+├── app.py                # FastAPI main application
+├── requirements.txt      # Python dependencies
+├── .env                  # Environment variables
+└── start.bat            # Quick start script
 ```
 
 ## 🚀 Quick Start
 
-### 1. Installation
+### Prerequisites
+- Python 3.11+
+- Node.js 18+
+- Google Gemini API Key ([Get it here](https://aistudio.google.com/app/apikey))
 
+### Installation
+
+1. **Clone the repository**
 ```bash
-# Clone the repository
-git clone <your-repo-url>
-cd code-review-agent
+git clone https://github.com/gokul18062006/code_review_agent.git
+cd code_review_agent
+```
 
-# Create virtual environment (recommended)
+2. **Set up Python virtual environment**
+```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+.\venv\Scripts\Activate.ps1  # Windows
+# or
+source venv/bin/activate      # Linux/Mac
+```
 
-# Install dependencies
+3. **Install Python dependencies**
+```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configuration
-
-**For AI-powered reviews**, set your OpenAI API key:
-
-```bash
-# Linux/Mac
-export OPENAI_API_KEY='your-api-key-here'
-
-# Windows PowerShell
-$env:OPENAI_API_KEY='your-api-key-here'
+4. **Configure environment variables**
+Create a `.env` file in the project root:
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+OPENAI_API_KEY=  # Optional
 ```
 
-**Note**: The system works without an API key using static analysis only.
-
-### 3. Run the Application
-
-**Option A: Web UI (Recommended)**
-
+5. **Install frontend dependencies**
 ```bash
-streamlit run streamlit_app.py
+cd frontend
+npm install
 ```
 
-Open browser at: `http://localhost:8501`
+### Running the Application
 
-**Option B: API Server**
-
+**Option 1: Using the start script (Windows)**
 ```bash
-python app.py
+.\start.bat
 ```
 
-API available at: `http://localhost:8000`
-API Docs: `http://localhost:8000/docs`
+**Option 2: Manually**
+
+Terminal 1 - Backend:
+```bash
+cd code_review_agent
+.\venv\Scripts\Activate.ps1
+python -m uvicorn app:app --reload --host 127.0.0.1 --port 8000
+```
+
+Terminal 2 - Frontend:
+```bash
+cd frontend
+npm run dev
+```
+
+**Access the application:**
+- Frontend: http://localhost:3000
+- Backend API: http://127.0.0.1:8000
+- API Docs: http://127.0.0.1:8000/docs
 
 ## 📖 Usage
 
 ### Web Interface
 
-1. Open the Streamlit app
-2. Paste your code or load an example
-3. Select language (or use auto-detect)
-4. Choose review focus (Comprehensive/Security/Performance/Style)
-5. Click "Review Code"
-6. View results with issues, suggestions, and ratings
+1. **Paste your code** into the editor
+2. Click **"Analyze Code"**
+3. View results:
+   - Language detection
+   - Code metrics (lines, functions, classes)
+   - Issues with specific fix suggestions
+   - General improvement suggestions
+
+### Example
+
+**Input:**
+```python
+def myFunction():
+    password = "secret123"
+    try:
+        x = 10 / 0
+    except:
+        pass
+```
+
+**Output:**
+```
+✅ PYTHON Code Analysis
+
+📊 Metrics: 5 lines | 1 function | 0 classes
+
+❌ Issues with Auto-Fix Suggestions (3)
+
+🔴 Issue: Function 'myFunction' uses camelCase
+✅ How to Fix: Rename to: my_function()
+
+🔴 Issue: 🔒 Security: Potential hardcoded password detected
+✅ How to Fix: Use os.getenv('PASSWORD') or python-dotenv
+
+🔴 Issue: Bare 'except:' clause detected
+✅ How to Fix: Replace with: except ZeroDivisionError:
+```
 
 ### API Usage
 
@@ -138,128 +207,158 @@ curl -X POST "http://localhost:8000/review" \
 ```json
 {
   "language": "python",
-  "issues": [
-    "Missing docstring for hello",
-    "[AI] Function lacks error handling"
-  ],
-  "suggestions": [
-    "Add docstrings to functions",
-    "[AI] Consider adding type hints"
+  "issues": ["Missing docstring for hello"],
+  "suggestions": ["Add docstring: \"\"\"Description of hello.\"\"\""],
+  "issue_fixes": [
+    {
+      "issue": "Missing docstring for hello",
+      "fix": "Add docstring: \"\"\"Description of hello.\"\"\""
+    }
   ],
   "rating": "Good",
-  "assessment": "The python code is functional but has 2 issue(s)...",
-  "static_analysis": {...},
-  "ai_analysis": {...},
-  "code_summary": {...}
+  "code_summary": {
+    "total_lines": 1,
+    "functions": 1,
+    "classes": 0
+  }
 }
 ```
+## 🌐 Deployment
 
-### Python Integration
+### Option 1: Vercel (Frontend) + Render (Backend) - Recommended
 
-```python
-from app import CodeReviewer
+**Frontend (Vercel):**
+```bash
+cd frontend
+npm i -g vercel
+vercel
+```
 
-reviewer = CodeReviewer()
+**Backend (Render):**
+1. Create `render.yaml` in project root:
+```yaml
+services:
+  - type: web
+    name: code-review-agent-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+```
 
-code = """
-def calculate(x, y):
-    return x / y
-"""
+2. Push to GitHub
+3. Go to [render.com](https://render.com)
+4. Connect your repo
+5. Add `GEMINI_API_KEY` environment variable
 
-result = reviewer.review(
-    code=code,
-    language='python',
-    focus='comprehensive',
-    use_ai=True
-)
+### Option 2: Railway (All-in-One)
+1. Go to [railway.app](https://railway.app)
+2. Deploy from GitHub
+3. Add `GEMINI_API_KEY` environment variable
 
-print(f"Rating: {result['rating']}")
-print(f"Issues: {result['issues']}")
-print(f"Suggestions: {result['suggestions']}")
+### Option 3: Docker
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+```bash
+docker build -t code-review-agent .
+docker run -p 8000:8000 -e GEMINI_API_KEY=your_key code-review-agent
 ```
 
 ## 🔍 What We Check
 
 ### Python
-- ✅ PEP 8 compliance
+- ✅ PEP 8 compliance & naming conventions
 - ✅ Missing docstrings
 - ✅ Unused variables
-- ✅ Exception handling
-- ✅ Function length
-- ✅ Hardcoded secrets
-- ✅ Import organization
-- ✅ Naming conventions
+- ✅ Exception handling (bare except, broad exceptions)
+- ✅ Function length & complexity
+- ✅ Hardcoded secrets (passwords, API keys)
+- ✅ Import organization (wildcard imports)
+- ✅ Deep nesting detection
 
 ### Java
-- ✅ Exception handling
+- ✅ Exception handling (empty catch, Throwable)
 - ✅ Resource management
 - ✅ Null checks
 - ✅ String comparison (== vs .equals())
-- ✅ Naming conventions
+- ✅ Naming conventions (PascalCase, camelCase)
 - ✅ JavaDoc comments
-- ✅ Constants (final)
-- ✅ Hardcoded values
+- ✅ Constants (static final)
+- ✅ Magic numbers
 
 ### C++
 - ✅ Memory management (new/delete)
 - ✅ Smart pointer usage
-- ✅ Namespace usage (using namespace std)
+- ✅ Namespace usage
 - ✅ Const correctness
-- ✅ Pointer safety (nullptr vs NULL)
+- ✅ Pointer safety (nullptr)
 - ✅ RAII pattern
 - ✅ Modern C++ features
-- ✅ Resource cleanup
 
-## 🎯 Review Focus Types
+## 🤝 Contributing
 
-1. **Comprehensive** - All aspects (bugs, security, performance, style)
-2. **Security** - Vulnerabilities, input validation, data exposure
-3. **Performance** - Algorithmic complexity, optimization opportunities
-4. **Style** - Code readability, naming conventions, documentation
+Contributions are welcome! Please follow these steps:
 
-## 🧪 Testing
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-Run the test examples in each module:
+## 🐛 Troubleshooting
 
-```bash
-# Test language detection
-python utils/detector.py
+**Issue: "No API key configured"**
+- Solution: Ensure `.env` file exists with `GEMINI_API_KEY`
+- Restart the backend server
 
-# Test code compression
-python utils/compressor.py
+**Issue: Frontend not connecting to backend**
+- Solution: Check backend is running on port 8000
+- Verify CORS settings in `app.py`
 
-# Test Python rules
-python languages/python_rules.py
+**Issue: Gemini API error 404**
+- Solution: Model name updated to `gemini-1.5-flash` (fixed in latest version)
 
-# Test Java rules
-python languages/java_rules.py
+## 📄 License
 
-# Test C++ rules
-python languages/cpp_rules.py
+This project is licensed under the MIT License.
 
-# Test prompt builder
-python ai/prompt_builder.py
+## 👤 Author
 
-# Test AI reviewer
-python ai/reviewer.py
-```
+**Gokul**
+- GitHub: [@gokul18062006](https://github.com/gokul18062006)
 
-## 📊 Example Output
+## 🙏 Acknowledgments
 
-**Input Code (Python):**
-```python
-def process(data):
-    password = "secret123"
-    result = []
-    for item in data:
-        if item > 0:
-            result.append(item * 2)
-    return result
-```
+- Google Gemini AI for powerful code analysis
+- FastAPI for the excellent Python framework
+- React and Vite for the modern frontend stack
+- Tailwind CSS for beautiful styling
 
-**Review Output:**
-```
-Rating: Needs Improvement
+## 🗺️ Roadmap
+
+- [ ] Support for more languages (JavaScript, Go, Rust)
+- [ ] Code diff comparison
+- [ ] Integration with GitHub/GitLab
+- [ ] VS Code Extension
+- [ ] Batch file analysis
+- [ ] Custom rule configuration
+- [ ] Export reports as PDF/HTML
+
+---
+
+⭐ **If you find this project helpful, please give it a star!**
+
+📧 **Contact:** [Create an issue](https://github.com/gokul18062006/code_review_agent/issues) for questions or suggestions.
 
 Issues:
 ⚠️ 🔒 Security: Potential hardcoded password detected
