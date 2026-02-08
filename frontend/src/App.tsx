@@ -4,7 +4,6 @@ import ReviewResults from './components/ReviewResults';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import { api, CodeReviewResponse } from './api';
-import { Loader2 } from 'lucide-react';
 
 function App() {
   const [code, setCode] = useState('');

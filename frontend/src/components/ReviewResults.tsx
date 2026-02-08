@@ -1,5 +1,4 @@
 import { CodeReviewResponse } from '../api';
-import { AlertCircle, Lightbulb, Bug, ArrowRight } from 'lucide-react';
 
 interface ReviewResultsProps {
   result: CodeReviewResponse;
@@ -38,7 +37,9 @@ export default function ReviewResults({ result }: ReviewResultsProps) {
         {result.static_analysis?.issue_fixes && result.static_analysis.issue_fixes.length > 0 ? (
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-3">
-              <Bug size={18} className="text-red-400" />
+              <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
               <span className="font-semibold text-white">Issues with Auto-Fix Suggestions ({result.static_analysis.issue_fixes.length})</span>
             </div>
             <div className="space-y-3">
@@ -47,13 +48,17 @@ export default function ReviewResults({ result }: ReviewResultsProps) {
                   <div className="flex items-start gap-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertCircle size={16} className="text-red-400" />
+                        <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                         <span className="text-red-300 font-medium">Issue:</span>
                       </div>
                       <p className="text-gray-200 mb-3">{item.issue}</p>
                       
                       <div className="flex items-center gap-2 mb-2">
-                        <ArrowRight size={16} className="text-green-400" />
+                        <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
                         <span className="text-green-300 font-medium">How to Fix:</span>
                       </div>
                       <p className="text-green-200 bg-green-900/20 p-2 rounded font-mono text-sm">{item.fix}</p>
@@ -66,7 +71,9 @@ export default function ReviewResults({ result }: ReviewResultsProps) {
         ) : result.issues.length > 0 ? (
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-3">
-              <Bug size={18} className="text-red-400" />
+              <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
               <span className="font-semibold text-white">Issues ({result.issues.length})</span>
             </div>
             <div className="space-y-2">
@@ -87,7 +94,9 @@ export default function ReviewResults({ result }: ReviewResultsProps) {
         {result.suggestions.length > 0 && (
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <Lightbulb size={18} className="text-yellow-400" />
+              <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
               <span className="font-semibold text-white">Suggestions ({result.suggestions.length})</span>
             </div>
             <div className="space-y-2">
