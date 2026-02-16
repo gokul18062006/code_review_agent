@@ -29,9 +29,12 @@ class AIReviewer:
         # Initialize Gemini client if API key available
         if self.gemini_key:
             try:
+                import warnings
+                warnings.filterwarnings('ignore', category=FutureWarning, module='google.generativeai')
                 import google.generativeai as genai
                 genai.configure(api_key=self.gemini_key)
-                self.client = genai.GenerativeModel('gemini-1.5-flash')
+                # Use stable V1 model - updated model name
+                self.client = genai.GenerativeModel('gemini-1.5-pro-latest')
                 self.use_gemini = True
                 print("Using Gemini API for code review")
             except ImportError:

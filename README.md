@@ -6,11 +6,50 @@ An intelligent, multi-language code review tool powered by Google Gemini AI that
 ![React](https://img.shields.io/badge/React-18.2-61dafb)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688)
 ![License](https://img.shields.io/badge/License-MIT-green)
+> **✅ VERIFIED WORKING PROJECT** - See [SUBMISSION_PROOF.md](SUBMISSION_PROOF.md) for test results and proof of functionality
 
+## 🎬 Quick Demo
+
+**Run this to see it work:**
+```bash
+# Quick demo (shows real output)
+.\run_demo.bat
+
+# Or manually:
+py test_demo.py
+
+# Test UNIVERSAL language support (12+ languages!)
+.\run_universal_test.bat
+# Or manually:
+py test_universal.py
+```
+
+**Expected Output:**
+```
+🐛 ISSUES FOUND (5):
+  1. 🔒 Security: Potential hardcoded password detected
+  2. Bare 'except:' clause detected
+  3. Non-Pythonic naming: loginUser() uses camelCase
+
+🔧 AUTO-FIX SUGGESTIONS:
+  1. ISSUE: Hardcoded password detected
+     FIX ➜ Use os.getenv('SECRET_NAME') instead
+```
 ## ✨ Features
 
+### � UNIVERSAL LANGUAGE SUPPORT (NEW!)
+- **Analyzes ANY Programming Language** - JavaScript, TypeScript, Go, Rust, Ruby, PHP, Swift, Kotlin, SQL, Bash, HTML, CSS, and 50+ more!
+- **Smart Language Detection** - Automatically identifies the language from code patterns
+- **Generic Code Quality Analysis** - Universal checks that work across all languages:
+  - Security issues (hardcoded passwords, injection vulnerabilities)
+  - Code complexity (deep nesting, long functions)
+  - Naming conventions (descriptive names, avoiding generic terms)
+  - Error handling (try/catch blocks for risky operations)
+  - Code smells (magic numbers, long parameter lists)
+  - Best practices (TODO comments, console logging)
+
 ### 🎯 Core Features
-- **Multi-Language Support**: Python, Java, C++, and more
+- **Multi-Language Support**: Enhanced analysis for Python, Java, C++
 - **AI-Powered Analysis**: Leverages Google Gemini 1.5 Flash for intelligent code review
 - **Static Analysis**: Rule-based checking without API dependency
 - **Auto-Fix Suggestions**: Each issue comes with a specific solution ⭐

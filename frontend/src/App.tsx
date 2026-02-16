@@ -43,7 +43,8 @@ function App() {
       <div className="container mx-auto px-6 py-10">
         <div className="max-w-6xl mx-auto">
           {/* Main Content */}
-          <div className="space-y-6">\n            {/* Code Editor */}
+          <div className="space-y-6">
+            {/* Code Editor */}
             <CodeEditor
               code={code}
               setCode={setCode}

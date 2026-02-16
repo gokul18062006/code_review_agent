@@ -4,7 +4,14 @@ Multi-language AI-powered code reviewer with static analysis
 """
 
 import os
+import sys
 from typing import Dict, Optional
+from pathlib import Path
+
+# Add project root to Python path so we can import utils, languages, ai modules
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -18,6 +25,7 @@ from utils.compressor import CodeCompressor
 from languages.python_rules import PythonRuleChecker
 from languages.java_rules import JavaRuleChecker
 from languages.cpp_rules import CppRuleChecker
+from languages.generic_rules import GenericRuleChecker
 from ai.reviewer import AIReviewer
 
 
@@ -89,8 +97,7 @@ class CodeReviewer:
         if not language:
             language = self.detector.detect(code)
         
-        if language == 'unknown':
-            raise ValueError("Could not detect programming language")
+        # No need to reject - we can analyze ANY language now!
         
         # Step 2: Generate code summary
         code_summary = self.compressor.create_summary(code, language)
@@ -99,8 +106,19 @@ class CodeReviewer:
         static_results = {'issues': [], 'suggestions': []}
         
         if language in self.rule_checkers:
+            # Use language-specific checker if available
             checker = self.rule_checkers[language]
             static_results = checker.check_all(code)
+        else:
+            # Use universal generic analyzer for ANY other language
+            generic_checker = GenericRuleChecker(code, language)
+            issues = generic_checker.analyze()
+            
+            # Format generic issues to match expected structure
+            static_results = {
+                'issues': [f"{issue.get('type', 'issue')}: {issue.get('message', '')}" for issue in issues],
+                'suggestions': [issue.get('suggestion', '') for issue in issues if issue.get('suggestion')]
+            }
         
         # Step 4: Run AI-powered review
         ai_results = None
