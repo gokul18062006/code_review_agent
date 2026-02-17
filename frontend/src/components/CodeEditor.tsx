@@ -5,45 +5,6 @@ interface CodeEditorProps {
   loading: boolean;
 }
 
-const DEMO_EXAMPLES = {
-  bad: `// JavaScript with issues
-const password = "admin123";  // Hardcoded password!
-const api_key = "sk-test-1234567890abcdef";
-
-function calculateTotal(items) {
-    let t = 0;  // Poor naming
-    for(let i = 0; i < items.length; i++) {
-        if(items[i].price > 100000) {  // Magic number
-            t = t + items[i].price;
-        }
-    }
-    console.log(t);  // Console logging
-    return t;
-}
-
-function processUserData(data) {
-    return eval(data);  // Security vulnerability!
-}`,
-  good: `// TypeScript - Clean Code
-import { config } from 'dotenv';
-
-interface Product {
-    id: number;
-    name: string;
-    price: number;
-}
-
-const PREMIUM_THRESHOLD = 100000;
-
-export function calculateTotal(items: Product[]): number {
-    const total = items
-        .filter(item => item.price > PREMIUM_THRESHOLD)
-        .reduce((sum, item) => sum + item.price, 0);
-    
-    return total;
-}`
-};
-
 export default function CodeEditor({ code, setCode, onReview, loading }: CodeEditorProps) {
   return (
     <div className="bg-gray-900 rounded-lg overflow-hidden border border-gray-800 shadow-xl">
