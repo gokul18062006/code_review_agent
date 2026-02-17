@@ -186,7 +186,7 @@ export default function CodeEditor({ code, setCode, onReview, loading }: CodeEdi
         <textarea
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          placeholder="📝 Paste your code here or upload a file...\n\n✨ Supports: Python, JavaScript, TypeScript, Java, C++, Go, Rust, Ruby, PHP, and 40+ more languages!\n\n🚀 Get instant analysis with auto-fix suggestions"
+          placeholder="Paste your code here or upload a file..."
           className="w-full h-[500px] p-6 bg-gray-950 text-gray-100 text-base code-editor resize-none focus:outline-none border-0 font-mono"
           spellCheck={false}
         />
